@@ -11,6 +11,10 @@ object CaseClassMapping extends App {
   // the base query for the Users table
   val users = TableQuery[Users]
 
+  // Construct a query where the price of Coffees is > 9.0
+  val filterQuery: Query[Users, User, Seq] =
+    users.filter(_.username.isNotNull)
+
   val db = Database.forConfig("h2mem1")
   try {
     Await.result(db.run(DBIO.seq(
@@ -23,7 +27,11 @@ object CaseClassMapping extends App {
 
       // print the users (select * from USERS)
       users.result.map(println)
+
+
     )), Duration.Inf)
+    db.run(filterQuery.result.map(println))
+
   } finally db.close
 }
 
@@ -31,7 +39,7 @@ case class User(name: String,
                 email: String,
                 userName: Option[String] = None,
                 birthDate: Option[DateTime] = None,
-                isActive: Option[Boolean] = None,
+                isActive: Option[Boolean] = Some(true),
                 //isAdmin: Option[Boolean] = None,
                 id: Option[Int] = None)
 
