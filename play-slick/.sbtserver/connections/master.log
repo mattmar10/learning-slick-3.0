@@ -1,0 +1,38 @@
+New log file opened at Wed Sep 02 06:42:55 CDT 2015 by 21931@teton.attlocal.net
+Taking next connection to: 63522
+New client attempting to connect on port: 63523-63522
+  Address = /192.168.1.70:63522
+This client on port 63523 has uuid 58c1d76e-95fd-4352-ae35-fec95efabdbe configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-58c1d76e-95fd-4352-ae35-fec95efabdbe
+Taking next connection to: 63522
+New client attempting to connect on port: 63524-63522
+  Address = /192.168.1.70:63522
+Handshake exception on socket: 63524
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:265)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 63522
+New client attempting to connect on port: 63525-63522
+  Address = /192.168.1.70:63522
+This client on port 63525 has uuid 779b006d-ac44-461a-831c-e6b06bd28749 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-58c1d76e-95fd-4352-ae35-fec95efabdbe, activator-779b006d-ac44-461a-831c-e6b06bd28749
+Taking next connection to: 63522
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 63522
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 21931@teton.attlocal.net logs at Wed Sep 02 06:48:56 CDT 2015, goodbye.
