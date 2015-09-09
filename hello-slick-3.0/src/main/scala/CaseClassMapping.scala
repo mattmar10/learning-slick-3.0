@@ -22,8 +22,8 @@ object CaseClassMapping extends App {
       users.schema.create,
 
       // insert two User instances
-      users += User("John Doe", "john.Doe@gmail.com", Some("jDoe")),
-      users += User("Fred Smith", "fred.smith@gmail.com"),
+      users += User("john.Doe@gmail.com", "jDoe", "John", None, "Doe"),
+      users += User("fred.smith@gmail.com", "fSmith", "Fred", Some("Albert"), "Smith"),
 
       // print the users (select * from USERS)
       users.result.map(println)
@@ -35,12 +35,18 @@ object CaseClassMapping extends App {
   } finally db.close
 }
 
-case class User(name: String,
-                email: String,
-                userName: Option[String] = None,
+case class User(email: String,
+                userName: String,
+                firstName: String,
+                middleName: Option[String] = None,
+                lastName: String,
+                createdDate: Option[DateTime] = Some(DateTime.now()),
                 birthDate: Option[DateTime] = None,
+                membershipDate: Option[DateTime] = None,
+                isMember: Option[Boolean] = Some(false),
                 isActive: Option[Boolean] = Some(true),
-                //isAdmin: Option[Boolean] = None,
+                isAdmin: Option[Boolean] = Some(false),
+                isLocked: Option[Boolean] = Some(false),
                 id: Option[Int] = None)
 
 class Users(tag: Tag) extends Table[User](tag, "USERS") {
@@ -53,23 +59,22 @@ class Users(tag: Tag) extends Table[User](tag, "USERS") {
   
   // Auto Increment the id primary key column
   def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
+  def email = column[String]("email")
+  def username = column[String]("username")
 
-  def name = column[String]("NAME")
-  def email = column[String]("EMAIL")
-  def username = column[Option[String]]("USERNAME")
-
-  //def firstName = column[String]("FIRST_NAME")
-  //def lastName = column[String]("LAST_NAME")
-  //def createdDate = column[Option[DateTime]]("CREATED_DATE", O.Default(Some(DateTime.now())))
-  def birthDate = column[Option[DateTime]]("BIRTH_DAY")
-  //def membershipDate = column[Option[DateTime]]("MEMBERSHIP_DATE")
-  def isActive = column[Boolean]("IS_ACTIVE", O.Default(true))
-  //def isAdmin = column[Option[Boolean]]("IS_ADMIN", O.Default(Some(false)))
-  //def isLocked = column[Option[Boolean]]("IS_LOCKED", O.Default(Some(false)))
-  //def isMember = column[Option[Boolean]]("IS_MEMBER", O.Default(Some(false)))
+  def firstName = column[String]("first_name")
+  def middleName = column[Option[String]]("middle_name")
+  def lastName = column[String]("last_name")
+  def createdDate = column[DateTime]("created_date")
+  def birthDate = column[Option[DateTime]]("birth_day")
+  def membershipDate = column[Option[DateTime]]("membership_date")
+  def isMember = column[Boolean]("is_member", O.Default(false))
+  def isActive = column[Boolean]("is_active", O.Default(true))
+  def isAdmin = column[Boolean]("is_admin", O.Default(false))
+  def isLocked = column[Boolean]("is_locked", O.Default(false))
   //def isAttender = column[Option[Boolean]]("IS_ATTENDER", O.Default(Some(false)))
 
   // the * projection (e.g. select * ...) auto-transforms the tupled
   // column values to / from a User
-  def * = (name, email, username, birthDate, isActive.?, id.?) <> (User.tupled, User.unapply)
+  def * = (email, username, firstName, middleName, lastName, createdDate.?, birthDate, membershipDate, isMember.?, isActive.?, isAdmin.?, isLocked.?, id.?) <> (User.tupled, User.unapply)
 }
